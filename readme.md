@@ -22,4 +22,4 @@ kode ini digunakan untuk titik awal (entry point) dari aplikasi Node.js saya khu
 
 disini saya menambahkan auth untuk Membatasi siapa yang boleh mengakses endpoint tertentu dan Melindungi data dan fitur CRUD agar hanya user yang sudah login bisa menggunakannya.
 
-Selain itu saya juga menambahkan JWT (json web token) supaya kita dapat menerima token ketika login 
+Selain itu saya juga menambahkan JWT (json web token) supaya kita dapat menerima token saat login 
