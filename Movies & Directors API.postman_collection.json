@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "1c4fe868-ea86-45c6-a4bb-b89fc3ab30f0",
+		"name": "Movies & Directors API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47979616"
+	},
+	"item": [
+		{
+			"name": "movies",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status respons adalah 200 OK\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type mengandung application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body respons adalah array atau berisi key message & data\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  // Jika API mengembalikan array langsung\r",
+									"  if (Array.isArray(jsonData)) {\r",
+									"    pm.expect(jsonData).to.be.an('array');\r",
+									"  } else {\r",
+									"    // Jika API mengembalikan { message: \"...\", data: [...] }\r",
+									"    pm.expect(jsonData).to.have.property('data');\r",
+									"    pm.expect(jsonData.data).to.be.an('array');\r",
+									"  }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"alfarizet\",\r\n  \"password\": \"sugengndalu28*\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3300/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "directors 54",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFsZmFyaXpldCJ9LCJpYXQiOjE3NjI0MTcyNTksImV4cCI6MTc2MjQyMDg1OX0.VaqZdLDsy9ZKvUrYujd9oOM3ek6-D0Qz7vQub4wINKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3300/movies/54",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"movies",
+								"54"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put directors 6",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"id\": 6,\r\n        \"name\": \"AARIS\",\r\n        \"birthYear\": 1970\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3300/directors/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"directors",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get directors",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"id\": 6,\r\n        \"name\": \"AARIS\",\r\n        \"birthYear\": 1970\r\n    }"
+						},
+						"url": {
+							"raw": "http://localhost:3300/directors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"directors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nambah directors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"id\": 9,\r\n        \"name\": \"kawule\",\r\n        \"birthYear\": 2005\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3300/directors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"directors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "movies tanpa token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "        {\r\n            \"id\": 53,\r\n            \"title\": \"saya\",\r\n            \"director\": \"Peter Jackson\",\r\n            \"year\": 2009\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3300/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3300",
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "movies",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "directors",
+			"item": [],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "nambah movies",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"id\": 53,\r\n            \"title\": \"naura\",\r\n            \"director\": \"Peter Jackson\",\r\n            \"year\": 2006\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3300/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3300",
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": ""
+		},
+		{
+			"value": ""
+		},
+		{
+			"value": ""
+		}
+	]
+}
