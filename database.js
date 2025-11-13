@@ -1,7 +1,8 @@
 require('dotenv').config(); // Load environment variables
 const sqlite3 = require('sqlite3').verbose(); // Import sqlite3
 
-const DBSOURCE = process.env.DB_SOURCE || "db.sqlite";
+// Tentukan sumber database (bisa dari .env atau default ke movies.db)
+const DBSOURCE = process.env.DB_SOURCE || "movies.db";
 
 const db = new sqlite3.Database(DBSOURCE, (err) => {
   if (err) {
@@ -10,7 +11,9 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
   } else {
     console.log('Connected to the SQLite database.');
 
-    // Tabel movies
+    // ========================
+    // TABEL MOVIES
+    // ========================
     db.run(
       `CREATE TABLE IF NOT EXISTS movies (
           id INTEGER PRIMARY KEY,
@@ -33,7 +36,9 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
       }
     );
 
-    // Tabel directors
+    // ========================
+    // TABEL DIRECTORS
+    // ========================
     db.run(
       `CREATE TABLE IF NOT EXISTS directors (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,11 +62,15 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
       }
     );
 
+    // ========================
+    // TABEL USERS (DENGAN ROLE)
+    // ========================
     db.run(
       `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT NOT NULL UNIQUE,
-          password TEXT NOT NULL
+          password TEXT NOT NULL,
+          role TEXT NOT NULL DEFAULT 'user'
       )`,
       (err) => {
         if (err) {

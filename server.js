@@ -5,7 +5,7 @@ const db = require('./database');
 const bcrypt = require('bcryptjs');      
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
-const authenticateToken = require('./middleware/authMiddleware');
+const { authenticateToken, authorizeRole } = require('./middleware/auth');
 
 const app = express();
 const port = process.env.PORT || 3100;
@@ -119,8 +119,8 @@ app.post('/auth/register', (req, res) => {
     }
 
     // 3. Simpan ke database
-    const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    const params = [username.toLowerCase(), hashedPassword];
+    const sql = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+    const params = [username.toLowerCase(), hashedPassword, 'user'];
 
     db.run(sql, params, function (err) {
       if (err) {
@@ -175,7 +175,8 @@ app.post('/auth/login', (req, res) => {
       const payload = { 
         user: { 
           id: user.id, 
-          username: user.username 
+          username: user.username, 
+          role: user.role
         } 
       };
 
@@ -196,6 +197,9 @@ app.post('/auth/login', (req, res) => {
 });
 
 // === PROTECTED MOVIES ROUTES (BUTUH TOKEN) ===
+// === PROTECTED MOVIES ROUTES (BUTUH TOKEN) ===
+
+// Endpoint POST (Perlu login)
 app.post('/movies', authenticateToken, (req, res) => {
   console.log('Request POST /movies oleh user:', req.user.username);
   const { id, title, director, year } = req.body;
@@ -211,7 +215,8 @@ app.post('/movies', authenticateToken, (req, res) => {
   });
 });
 
-app.put('/movies/:id', authenticateToken, (req, res) => {
+// Endpoint PUT (Perlu login DAN peran admin)
+app.put('/movies/:id', [authenticateToken, authorizeRole('admin')], (req, res) => {
   console.log('Request PUT /movies oleh user:', req.user.username);
   const { title, director, year } = req.body;
   const { id } = req.params;
@@ -224,7 +229,8 @@ app.put('/movies/:id', authenticateToken, (req, res) => {
   });
 });
 
-app.delete('/movies/:id', authenticateToken, (req, res) => {
+// Endpoint DELETE (Perlu login DAN peran admin)
+app.delete('/movies/:id', [authenticateToken, authorizeRole('admin')], (req, res) => {
   console.log('Request DELETE /movies oleh user:', req.user.username);
   const { id } = req.params;
 
@@ -235,6 +241,7 @@ app.delete('/movies/:id', authenticateToken, (req, res) => {
     res.json({ message: 'Movie berhasil dihapus' });
   });
 });
+
 
 // fallback 404
 

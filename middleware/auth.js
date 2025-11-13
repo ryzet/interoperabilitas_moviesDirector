@@ -8,7 +8,7 @@ function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(' ')[1];
   console.log("Extracted Token:", token);  
 
-  if (!token) {
+  if (!token == null) {
     return res.status(401).json({ error: 'Akses ditolak, token tidak ditemukan' });
   }
 
@@ -20,9 +20,19 @@ function authenticateToken(req, res, next) {
 
     console.log("Decoded Token Payload:", decodedPayload); ``
     req.user = decodedPayload.user;
-
+    {id, username, role}
     next();
   });
 }
 
-module.exports = authenticateToken;
+function authorizeRole(role) {
+  return (req, res, next) => {
+    if (req.user && req.user.role === role) {
+      next();
+    } else {
+      return res.status(403).json({ error: 'Akses dilarang: peran tidak memadai' });
+    }
+  };
+}
+
+module.exports = {authenticateToken, authorizeRole};
